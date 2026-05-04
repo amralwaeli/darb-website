@@ -4,6 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { Menu, X, Globe } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Logo } from './Logo';
+import vision2030Logo from '@/assets/2030-vision.svg';
 
 const links = [
   { to: '/', key: 'nav.home' },
@@ -37,7 +38,6 @@ export const Navbar = () => {
       <div className="container flex items-center justify-between h-16 md:h-20">
         <div className="flex items-center gap-4">
           <Logo />
-          <img src="/vision2030.png" alt="Vision 2030" className="hidden sm:block h-9 w-auto opacity-90" onError={(e) => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }} />
         </div>
 
         <nav className="hidden lg:flex items-center gap-1">
@@ -57,13 +57,20 @@ export const Navbar = () => {
           ))}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-3">
           <Button variant="ghost" size="sm" onClick={toggleLang} className="gap-2">
             <Globe className="h-4 w-4" /> <span className="hidden sm:inline">{t('lang')}</span>
           </Button>
-          <Button asChild size="sm" className="hidden md:inline-flex bg-gradient-ignition text-primary-foreground hover:opacity-90 shadow-glow">
-            <Link to="/investment">{t('cta.invest')}</Link>
-          </Button>
+          
+          {/* Vision 2030 Logo - Replaces "Become an investor" button */}
+          <div className="hidden md:flex items-center">
+            <img 
+              src={vision2030Logo} 
+              alt="Saudi Vision 2030" 
+              className="h-10 w-auto opacity-90 hover:opacity-100 transition-opacity"
+            />
+          </div>
+          
           <button onClick={() => setOpen(!open)} className="lg:hidden p-2 rounded-lg hover:bg-secondary" aria-label="Menu">
             {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
@@ -85,6 +92,14 @@ export const Navbar = () => {
                 {t(l.key)}
               </NavLink>
             ))}
+            {/* Vision 2030 Logo in mobile menu */}
+            <div className="px-4 py-3 mt-2">
+              <img 
+                src={vision2030Logo} 
+                alt="Saudi Vision 2030" 
+                className="h-8 w-auto opacity-90"
+              />
+            </div>
           </nav>
         </div>
       )}
