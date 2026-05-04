@@ -1,0 +1,129 @@
+@import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+@import 'leaflet/dist/leaflet.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Premium fuel-industry palette: deep midnight + amber ignition */
+    --background: 222 35% 6%;
+    --foreground: 40 30% 96%;
+
+    --card: 222 30% 9%;
+    --card-foreground: 40 30% 96%;
+
+    --popover: 222 35% 7%;
+    --popover-foreground: 40 30% 96%;
+
+    --primary: 22 100% 55%;
+    --primary-foreground: 222 40% 8%;
+    --primary-glow: 28 100% 62%;
+
+    --secondary: 222 25% 14%;
+    --secondary-foreground: 40 30% 96%;
+
+    --muted: 222 20% 13%;
+    --muted-foreground: 40 10% 65%;
+
+    --accent: 38 92% 58%;
+    --accent-foreground: 222 40% 8%;
+
+    --destructive: 0 75% 55%;
+    --destructive-foreground: 40 30% 96%;
+
+    --border: 222 20% 16%;
+    --input: 222 25% 12%;
+    --ring: 22 100% 55%;
+
+    --radius: 0.875rem;
+
+    --gradient-hero: linear-gradient(135deg, hsl(22 100% 55% / 0.95), hsl(35 100% 60% / 0.85));
+    --gradient-ignition: linear-gradient(135deg, hsl(22 100% 55%) 0%, hsl(38 92% 58%) 100%);
+    --gradient-dark: linear-gradient(180deg, hsl(222 35% 6% / 0) 0%, hsl(222 35% 6%) 70%);
+    --gradient-card: linear-gradient(145deg, hsl(222 30% 11%) 0%, hsl(222 35% 7%) 100%);
+    --gradient-radial: radial-gradient(circle at 50% 0%, hsl(22 100% 55% / 0.18), transparent 60%);
+
+    --shadow-glow: 0 20px 60px -20px hsl(22 100% 55% / 0.45);
+    --shadow-elegant: 0 25px 70px -25px hsl(0 0% 0% / 0.6);
+    --shadow-soft: 0 10px 30px -10px hsl(0 0% 0% / 0.4);
+
+    --transition-smooth: cubic-bezier(0.22, 1, 0.36, 1);
+
+    --sidebar-background: 222 35% 6%;
+    --sidebar-foreground: 40 30% 96%;
+    --sidebar-primary: 22 100% 55%;
+    --sidebar-primary-foreground: 222 40% 8%;
+    --sidebar-accent: 222 25% 14%;
+    --sidebar-accent-foreground: 40 30% 96%;
+    --sidebar-border: 222 20% 16%;
+    --sidebar-ring: 22 100% 55%;
+  }
+}
+
+@layer base {
+  * { @apply border-border; }
+  html { scroll-behavior: smooth; }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Space Grotesk', 'Inter', system-ui, sans-serif;
+    background-image: var(--gradient-radial);
+    background-attachment: fixed;
+  }
+  html[dir='rtl'] body {
+    font-family: 'Cairo', system-ui, sans-serif;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Space Grotesk', sans-serif;
+    @apply tracking-tight;
+  }
+  html[dir='rtl'] h1, html[dir='rtl'] h2, html[dir='rtl'] h3, html[dir='rtl'] h4 {
+    font-family: 'Cairo', sans-serif;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    background: var(--gradient-ignition);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  .bg-gradient-ignition { background: var(--gradient-ignition); }
+  .bg-gradient-card { background: var(--gradient-card); }
+  .shadow-glow { box-shadow: var(--shadow-glow); }
+  .shadow-elegant { box-shadow: var(--shadow-elegant); }
+  .shadow-soft { box-shadow: var(--shadow-soft); }
+  .glass {
+    background: hsl(222 30% 9% / 0.6);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid hsl(40 30% 96% / 0.06);
+  }
+  .grid-pattern {
+    background-image:
+      linear-gradient(hsl(40 30% 96% / 0.04) 1px, transparent 1px),
+      linear-gradient(90deg, hsl(40 30% 96% / 0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+  }
+}
+
+/* Leaflet dark mode */
+.leaflet-container { background: hsl(222 35% 6%); border-radius: var(--radius); }
+.leaflet-tile { filter: brightness(0.7) invert(1) contrast(0.95) hue-rotate(190deg) saturate(0.4) brightness(0.95); }
+.leaflet-control-attribution { background: hsl(222 30% 9% / 0.8) !important; color: hsl(40 10% 65%) !important; }
+.leaflet-control-attribution a { color: hsl(22 100% 55%) !important; }
+.leaflet-popup-content-wrapper, .leaflet-popup-tip { background: hsl(222 30% 9%) !important; color: hsl(40 30% 96%) !important; }
+
+@keyframes float-up {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-float-up { animation: float-up 0.8s var(--transition-smooth) both; }
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 0 0 hsl(22 100% 55% / 0.4); }
+  50% { box-shadow: 0 0 0 12px hsl(22 100% 55% / 0); }
+}
+.animate-pulse-glow { animation: pulse-glow 2s infinite; }

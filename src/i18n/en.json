@@ -1,0 +1,75 @@
+{
+  "brand": "Darb",
+  "nav": {
+    "home": "Home",
+    "about": "About",
+    "map": "Stations",
+    "investment": "Investment",
+    "rental": "Rental",
+    "jobs": "Careers",
+    "media": "Media",
+    "faq": "FAQ",
+    "contact": "Contact"
+  },
+  "cta": {
+    "explore": "Explore stations",
+    "invest": "Become an investor",
+    "viewAll": "View all",
+    "submit": "Submit application",
+    "learnMore": "Learn more"
+  },
+  "hero": {
+    "tag": "Powering the Kingdom · Vision 2030 aligned",
+    "title": "Fueling the journey,",
+    "titleAccent": "redefining the road.",
+    "subtitle": "53 premium stations across Saudi Arabia. Engineered for performance. Designed for everyone."
+  },
+  "stats": {
+    "stations": "Active stations",
+    "cities": "Cities served",
+    "years": "Years of trust",
+    "uptime": "Service uptime"
+  },
+  "services": {
+    "title": "A full-service network",
+    "subtitle": "Everything drivers, fleets, and businesses need — under one canopy.",
+    "fuel": { "title": "Premium Fuel", "desc": "High-quality 91, 95 and diesel grades, dispensed fast." },
+    "ev": { "title": "EV Charging", "desc": "Fast-charging stations rolling out via our EVIQ partnership." },
+    "retail": { "title": "Retail & F&B", "desc": "Convenience stores, cafés and quick-service dining." },
+    "rental": { "title": "Lease a Space", "desc": "Kiosks, drive-thrus and shops in high-traffic locations." }
+  },
+  "network": {
+    "title": "53 stations. One network.",
+    "subtitle": "From Riyadh to Jeddah and beyond — find the nearest Darb station in seconds.",
+    "cta": "Open the map"
+  },
+  "invest": {
+    "title": "Invest with Darb",
+    "subtitle": "Join Saudi Arabia's most ambitious fuel-retail network. Franchise opportunities from SAR 250,000.",
+    "form": {
+      "name": "Full name",
+      "email": "Email",
+      "phone": "Phone",
+      "type": "Investor type",
+      "city": "Preferred city",
+      "message": "Tell us about your project",
+      "success": "Thank you — our investment team will be in touch within 48 hours."
+    },
+    "types": {
+      "franchise": "Franchise",
+      "station": "Station owner",
+      "land": "Landowner",
+      "broker": "Broker",
+      "investor": "Investor"
+    }
+  },
+  "footer": {
+    "tagline": "Engineering the future of mobility across the Kingdom.",
+    "company": "Company",
+    "services": "Services",
+    "support": "Support",
+    "follow": "Follow Darb",
+    "rights": "All rights reserved."
+  },
+  "lang": "العربية"
+}
