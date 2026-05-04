@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { z } from 'zod';
 import { Plus, Trash2, LogOut, MapPin, Building2, ImageIcon } from 'lucide-react';
@@ -31,6 +31,12 @@ interface PartnerRow {
   id: string; name: string; logo_url: string;
 }
 
+interface SelectedLogo {
+  name: string;
+  src: string;
+  isSvg: boolean;
+}
+
 const Admin = () => {
   const nav = useNavigate();
   const { user, isAdmin, loading, signOut } = useAuth();
@@ -45,6 +51,8 @@ const Admin = () => {
   // Partners State
   const [partners, setPartners] = useState<PartnerRow[]>([]);
   const [partnerName, setPartnerName] = useState('');
+  const [selectedLogo, setSelectedLogo] = useState<SelectedLogo | null>(null);
+  const logoInputRef = useRef<HTMLInputElement>(null);
   
   // Cropper State
   const [imageObj, setImageObj] = useState<HTMLImageElement | null>(null);
@@ -109,17 +117,38 @@ const Admin = () => {
     const file = e.target.files?.[0];
     if (!file) return;
 
-    // Use FileReader to ensure we get a valid data URL
+    setSelectedLogo(null);
+    setImageObj(null);
+
     const reader = new FileReader();
     reader.onload = (event) => {
+      const src = event.target?.result;
+      if (typeof src !== 'string') {
+        toast.error('Could not read the selected file');
+        return;
+      }
+
+      const isSvg = file.type === 'image/svg+xml' || file.name.toLowerCase().endsWith('.svg');
+      setSelectedLogo({ name: file.name, src, isSvg });
+      setScale(1);
+      setPos({ x: 0, y: 0 });
+
+      if (isSvg) return;
+
       const img = new Image();
       img.onload = () => {
-        console.log("Image loaded, setting state...");
-        setImageObj(img); // This should trigger the re-render
-        setScale(1);
-        setPos({ x: 0, y: 0 });
+        setImageObj(img);
       };
-      img.src = event.target?.result as string;
+      img.onerror = () => {
+        setSelectedLogo(null);
+        toast.error('Could not load the selected image');
+      };
+      img.src = src;
+    };
+    reader.onerror = () => {
+      setSelectedLogo(null);
+      setImageObj(null);
+      toast.error('Could not read the selected file');
     };
     reader.readAsDataURL(file);
   };
@@ -143,35 +172,42 @@ const Admin = () => {
   const onSubmitPartner = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!partnerName.trim()) { toast.error('Partner name required'); return; }
-    if (!imageObj) { toast.error('Please upload an image'); return; }
+    if (!selectedLogo) { toast.error('Please upload an image'); return; }
+    if (!selectedLogo.isSvg && !imageObj) { toast.error('Image is still loading'); return; }
 
     setBusy(true);
-    
-    // Create an exact fixed-dimension canvas (288x160 for high quality 144x80 box)
-    const canvas = document.createElement('canvas');
-    canvas.width = 288;
-    canvas.height = 160;
-    const ctx = canvas.getContext('2d');
-    
-    if (ctx) {
-      // Scale up by 2 to match retina canvas sizes
-      ctx.scale(2, 2);
-      ctx.translate(pos.x, pos.y);
-      ctx.scale(scale, scale);
-      ctx.drawImage(imageObj, 0, 0);
-    }
-    
-    // Export normalized rasterized image
-    const base64Logo = canvas.toDataURL('image/png');
 
-    const { error } = await supabase.from('partners').insert({ name: partnerName.trim(), logo_url: base64Logo });
+    let logoUrl = selectedLogo.src;
+
+    if (!selectedLogo.isSvg && imageObj) {
+      // Create an exact fixed-dimension canvas (288x160 for high quality 144x80 box)
+      const canvas = document.createElement('canvas');
+      canvas.width = 288;
+      canvas.height = 160;
+      const ctx = canvas.getContext('2d');
+      
+      if (ctx) {
+        // Scale up by 2 to match retina canvas sizes
+        ctx.scale(2, 2);
+        ctx.translate(pos.x, pos.y);
+        ctx.scale(scale, scale);
+        ctx.drawImage(imageObj, 0, 0);
+      }
+      
+      // Export normalized rasterized image
+      logoUrl = canvas.toDataURL('image/png');
+    }
+
+    const { error } = await supabase.from('partners').insert({ name: partnerName.trim(), logo_url: logoUrl });
     setBusy(false);
 
     if (error) { toast.error(error.message); return; }
     
     toast.success('Partner added');
     setPartnerName('');
+    setSelectedLogo(null);
     setImageObj(null);
+    if (logoInputRef.current) logoInputRef.current.value = '';
     loadPartners();
   };
 
@@ -280,12 +316,14 @@ const Admin = () => {
 
             <div>
               <Label>Logo Image (SVG, PNG, JPG)</Label>
-              <Input type="file" accept="image/*,.svg" onChange={onFileChange} className="mt-1" />
+              <Input ref={logoInputRef} type="file" accept="image/*,.svg" onChange={onFileChange} className="mt-1" />
             </div>
 
-            {imageObj && (
+            {selectedLogo && (
               <div className="bg-background/50 border border-border/50 rounded-xl p-4 mt-2">
-                <Label className="mb-2 block text-xs text-muted-foreground">Adjust Logo (Drag to move, use slider to zoom)</Label>
+                <Label className="mb-2 block text-xs text-muted-foreground">
+                  {selectedLogo.isSvg ? selectedLogo.name : 'Adjust Logo'}
+                </Label>
                 <div className="flex flex-col items-center gap-4">
                   
                   {/* Fixed Dimension Preview Box (144x80 matches w-36 h-20 exactly) */}
@@ -298,38 +336,42 @@ const Admin = () => {
                     onPointerCancel={handlePointerUp}
                   >
                     <img 
-                      src={imageObj.src} 
+                      src={selectedLogo.src} 
                       alt="preview"
                       style={{
                         position: 'absolute',
                         transformOrigin: '0 0',
-                        transform: `translate(${pos.x}px, ${pos.y}px) scale(${scale})`,
+                        transform: selectedLogo.isSvg ? 'none' : `translate(${pos.x}px, ${pos.y}px) scale(${scale})`,
                         pointerEvents: 'none',
-                        maxWidth: 'none', // Prevent tailwind default shrinking
+                        maxWidth: selectedLogo.isSvg ? '100%' : 'none',
+                        maxHeight: selectedLogo.isSvg ? '100%' : 'none',
+                        width: selectedLogo.isSvg ? '100%' : undefined,
+                        height: selectedLogo.isSvg ? '100%' : undefined,
+                        objectFit: selectedLogo.isSvg ? 'contain' : undefined,
                       }}
                     />
                   </div>
 
-                  <div className="w-full flex items-center gap-3">
-                    <span className="text-xs">Zoom</span>
-                    <input 
-                      type="range" 
-                      min="0.1" 
-                      max="3" 
-                      step="0.02" 
-                      value={scale} 
-                      onChange={e => setScale(Number(e.target.value))}
-                      className="flex-1 accent-primary" 
-                    />
-                  </div>
+                  {!selectedLogo.isSvg && (
+                    <div className="w-full flex items-center gap-3">
+                      <span className="text-xs">Zoom</span>
+                      <input 
+                        type="range" 
+                        min="0.1" 
+                        max="3" 
+                        step="0.02" 
+                        value={scale} 
+                        onChange={e => setScale(Number(e.target.value))}
+                        className="flex-1 accent-primary" 
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             )}
 
             <Button 
                 type="submit" 
-                // Let's remove the condition for a moment to test if the button works
-                // If this makes it clickable, then the issue is definitely that 'imageObj' is staying null
                 disabled={busy} 
                 className="w-full h-11 bg-gradient-ignition text-primary-foreground shadow-glow"
               >
