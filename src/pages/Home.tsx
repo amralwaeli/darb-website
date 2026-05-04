@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { ArrowRight, Fuel, Zap, ShoppingBag, Store, MapPin, ChevronRight } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import heroImg from '@/assets/hero-station.jpg';
+import heroImg from '@/assets/hero-station.svg';
 import networkImg from '@/assets/network-aerial.jpg';
 import evImg from '@/assets/ev-charging.jpg';
 
