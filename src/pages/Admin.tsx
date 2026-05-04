@@ -106,22 +106,23 @@ const Admin = () => {
 
   // ─── Partners/Cropper Handlers ───
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-  const file = e.target.files?.[0];
-  if (!file) return;
+    const file = e.target.files?.[0];
+    if (!file) return;
 
-  const reader = new FileReader();
-  reader.onload = (event) => {
-    const img = new Image();
-    img.onload = () => {
-      console.log("Image loaded dimensions:", img.width, img.height);
-      setImageObj(img);
-      setScale(1);
-      setPos({ x: 0, y: 0 });
+    // Use FileReader to ensure we get a valid data URL
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      const img = new Image();
+      img.onload = () => {
+        console.log("Image loaded, setting state...");
+        setImageObj(img); // This should trigger the re-render
+        setScale(1);
+        setPos({ x: 0, y: 0 });
+      };
+      img.src = event.target?.result as string;
     };
-    img.src = event.target?.result as string;
+    reader.readAsDataURL(file);
   };
-  reader.readAsDataURL(file);
-};
 
   const handlePointerDown = (e: React.PointerEvent) => {
     setIsDragging(true);
