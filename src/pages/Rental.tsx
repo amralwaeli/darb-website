@@ -12,50 +12,6 @@ import { toast } from 'sonner';
 import { supabase } from '@/integrations/supabase/client';
 import heroBg from '@/assets/hero-station.jpg';
 
-const svgLogo = (svg: string) => `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
-
-const STATIC_LOGOS = [
-  svgLogo(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160"><rect width="320" height="160" rx="24" fill="#fff"/><path d="M73 36 86 67l34 3-26 22 8 33-29-17-29 17 8-33-26-22 34-3Z" fill="#ffc928"/><path d="M54 85c24 23 59 23 84 0" fill="none" stroke="#ff6b00" stroke-width="10" stroke-linecap="round"/><path d="M167 52h18v60h-18zM199 52h18v60h-18zM231 52h18v60h-18z" fill="#111827"/></svg>`),
-  svgLogo(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160"><rect width="320" height="160" rx="24" fill="#fff"/><path d="M70 45v70M70 115h72c31 0 51-17 51-35s-20-35-51-35H70" fill="none" stroke="#111827" stroke-width="10" stroke-linecap="round"/><circle cx="224" cy="82" r="33" fill="none" stroke="#111827" stroke-width="10"/><path d="M262 50v65" stroke="#111827" stroke-width="10" stroke-linecap="round"/></svg>`),
-  svgLogo(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160"><rect width="320" height="160" rx="24" fill="#fff"/><path d="M52 35h95l-14 90H66Z" fill="#b5122b"/><circle cx="99" cy="73" r="31" fill="#fff"/><path d="M72 77c20-25 46-25 59 0M89 57h20M82 89h33" fill="none" stroke="#111827" stroke-width="6" stroke-linecap="round"/><text x="168" y="96" font-family="Arial Black, Arial, sans-serif" font-size="46" font-weight="900" fill="#b5122b">KFC</text></svg>`),
-  svgLogo(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160"><rect width="320" height="160" rx="24" fill="#72cdd1"/><text x="45" y="100" font-family="Arial Black, Arial, sans-serif" font-size="48" font-weight="900" fill="#fff">zeeka</text><circle cx="251" cy="93" r="8" fill="#ff4b4b"/></svg>`),
-  svgLogo(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160"><rect width="320" height="160" rx="24" fill="#fff"/><text x="54" y="93" font-family="Arial Black, Arial, sans-serif" font-size="40" font-weight="900" fill="#078047">barns</text><circle cx="226" cy="80" r="42" fill="#078047"/><path d="M204 74h37v22c0 10-8 18-18 18h-1c-10 0-18-8-18-18Z" fill="none" stroke="#fff" stroke-width="6"/><path d="M241 80h11c0 13-8 20-18 20M208 64h28" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round"/></svg>`),
-  svgLogo(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 160"><rect width="320" height="160" rx="24" fill="#fff"/><g transform="translate(88 28) rotate(45 52 52)"><rect x="0" y="0" width="104" height="104" rx="18" fill="#0b76bd"/><path d="M52 0v104M0 52h104" stroke="#fff" stroke-width="8"/><circle cx="27" cy="27" r="9" fill="#fff"/><circle cx="77" cy="27" r="9" fill="#fff"/><circle cx="52" cy="77" r="9" fill="#fff"/></g></svg>`),
-];
-
-// ─── Hardcoded Partner logos ──────────────────────────────────────────────────
-const STATIC_PARTNERS = [
-  {
-    name: "McDonald's",
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/36/McDonald%27s_Golden_Arches.svg/200px-McDonald%27s_Golden_Arches.svg.png',
-  },
-  {
-    name: 'FireGrill',
-    logo: 'https://d1csarkz8obe9u.cloudfront.net/posterpreviews/fire-grill-restaurant-logo-design-template-59e2e08e93ca6e0c8b91e5a8e04a5e8a_screen.jpg?ts=1698038804',
-    fallbackText: 'FireGrill',
-  },
-  {
-    name: 'KUDU',
-    logo: 'https://upload.wikimedia.org/wikipedia/en/thumb/6/63/Kudu_restaurant_logo.svg/200px-Kudu_restaurant_logo.svg.png',
-    fallbackText: 'كودو',
-  },
-  {
-    name: "Domino's Pizza",
-    logo: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3e/Domino%27s_pizza_logo.svg/200px-Domino%27s_pizza_logo.svg.png',
-  },
-  {
-    name: 'JOINT',
-    logo: null,
-    fallbackText: 'JOINT',
-    isText: true,
-  },
-  {
-    name: 'Al-Tazaj',
-    logo: 'https://upload.wikimedia.org/wikipedia/ar/thumb/9/9a/Al_Tazaj_Logo.png/200px-Al_Tazaj_Logo.png',
-    fallbackText: 'الطازج',
-  },
-];
-
 // ─── Zod schema ───────────────────────────────────────────────────────────────
 const schema = z.object({
   name: z.string().trim().min(2, 'required').max(100),
@@ -126,13 +82,8 @@ const Rental = () => {
 
   const businessTypes = ['shop', 'kiosk', 'driveThru', 'supermarket'] as const;
 
-  // Combine static and DB partners
-  const staticPartners = STATIC_PARTNERS.map((partner, index) => ({
-    name: partner.name,
-    logo: STATIC_LOGOS[index] ?? partner.logo,
-  }));
-  
-  const combinedPartners = [...staticPartners, ...dbPartners].filter(
+  // Use only database partners
+  const combinedPartners = dbPartners.filter(
     (partner): partner is Partner => Boolean(partner.logo)
   );
 
