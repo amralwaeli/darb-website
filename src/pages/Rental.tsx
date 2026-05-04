@@ -56,24 +56,24 @@ const schema = z.object({
 });
 type FormData = z.infer<typeof schema>;
 
+interface Partner {
+  name: string;
+  logo: string | null;
+}
+
 // ─── Logo card ────────────────────────────────────────────────────────────────
-const PartnerCard = ({ partner }: { partner: any }) => {
+const PartnerCard = ({ partner }: { partner: Partner }) => {
   const [imgError, setImgError] = useState(false);
+  if (!partner.logo || imgError) return null;
 
   return (
-    <div className="bg-white rounded-2xl p-3 flex items-center justify-center h-20 w-36 shadow-md flex-shrink-0">
-      {partner.logo && !imgError ? (
-        <img
-          src={partner.logo}
-          alt={partner.name}
-          className="max-h-12 max-w-full object-contain"
-          onError={() => setImgError(true)}
-        />
-      ) : (
-        <span className="text-gray-800 font-bold text-sm text-center leading-tight px-1">
-          {partner.fallbackText ?? partner.name}
-        </span>
-      )}
+    <div className="bg-white rounded-[18px] p-4 flex items-center justify-center h-20 w-40 md:h-24 md:w-48 shadow-md flex-shrink-0">
+      <img
+        src={partner.logo}
+        alt={partner.name}
+        className="h-full w-full object-contain"
+        onError={() => setImgError(true)}
+      />
     </div>
   );
 };
@@ -83,7 +83,7 @@ const Rental = () => {
   const { t, i18n } = useTranslation();
   const isRtl = i18n.dir() === 'rtl';
   const [done, setDone] = useState(false);
-  const [dbPartners, setDbPartners] = useState<any[]>([]);
+  const [dbPartners, setDbPartners] = useState<Partner[]>([]);
 
   // Fetch partners added by Admin
   useEffect(() => {
@@ -108,7 +108,11 @@ const Rental = () => {
   const businessTypes = ['shop', 'kiosk', 'driveThru', 'supermarket'] as const;
   
   // Combine static and DB partners
-  const combinedPartners = [...STATIC_PARTNERS, ...dbPartners];
+  const combinedPartners = [...STATIC_PARTNERS, ...dbPartners].filter((partner): partner is Partner => Boolean(partner.logo));
+  const minimumLogoCount = 12;
+  const trackPartners = Array.from({
+    length: Math.max(1, Math.ceil(minimumLogoCount / Math.max(combinedPartners.length, 1))),
+  }).flatMap(() => combinedPartners);
 
   return (
     <div
@@ -125,10 +129,10 @@ const Rental = () => {
       <style>{`
         @keyframes scroll-marquee {
           0% { transform: translateX(0); }
-          100% { transform: translateX(calc(-50% - 0.5rem)); }
+          100% { transform: translateX(-50%); }
         }
         .animate-marquee {
-          animation: scroll-marquee 40s linear infinite;
+          animation: scroll-marquee 34s linear infinite;
         }
         .animate-marquee:hover {
           animation-play-state: paused;
@@ -152,10 +156,13 @@ const Rental = () => {
           <div className="absolute inset-y-0 left-0 w-12 md:w-24 bg-gradient-to-r from-black/50 to-transparent z-10 pointer-events-none" />
           <div className="absolute inset-y-0 right-0 w-12 md:w-24 bg-gradient-to-l from-black/50 to-transparent z-10 pointer-events-none" />
 
-          <div className="flex w-max animate-marquee gap-4" dir="ltr">
-            {/* Render two identical sets to create the seamless infinite loop effect */}
-            {[...combinedPartners, ...combinedPartners].map((p, idx) => (
-              <PartnerCard key={idx} partner={p} />
+          <div className="flex w-max animate-marquee" dir="ltr" aria-label="Rental partners">
+            {[0, 1].map((track) => (
+              <div key={track} className="flex gap-6 pr-6" aria-hidden={track === 1}>
+                {trackPartners.map((p, idx) => (
+                  <PartnerCard key={`${track}-${p.name}-${idx}`} partner={p} />
+                ))}
+              </div>
             ))}
           </div>
         </div>
