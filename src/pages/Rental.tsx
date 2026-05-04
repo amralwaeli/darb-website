@@ -58,13 +58,14 @@ const STATIC_PARTNERS = [
 
 // ─── Zod schema ───────────────────────────────────────────────────────────────
 const schema = z.object({
-  name:       z.string().trim().min(2, 'required').max(100),
-  phone:      z.string().trim().min(8, 'required').max(20),
-  city:       z.string().trim().min(1, 'required').max(100),
-  type:       z.string().min(1, 'required'),
-  branches:   z.string().trim().min(1, 'required').max(20),
-  brand:      z.string().trim().min(1, 'required').max(100),
+  name: z.string().trim().min(2, 'required').max(100),
+  phone: z.string().trim().min(8, 'required').max(20),
+  city: z.string().trim().min(1, 'required').max(100),
+  type: z.string().min(1, 'required'),
+  branches: z.string().trim().min(1, 'required').max(20),
+  brand: z.string().trim().min(1, 'required').max(100),
 });
+
 type FormData = z.infer<typeof schema>;
 
 interface Partner {
@@ -75,8 +76,9 @@ interface Partner {
 // ─── Logo card ────────────────────────────────────────────────────────────────
 const PartnerCard = ({ partner }: { partner: Partner }) => {
   const [imgError, setImgError] = useState(false);
+  
   if (!partner.logo || imgError) return null;
-
+  
   return (
     <div className="bg-white rounded-[18px] p-4 flex items-center justify-center h-20 w-40 md:h-24 md:w-48 shadow-md flex-shrink-0">
       <img
@@ -99,7 +101,11 @@ const Rental = () => {
   // Fetch partners added by Admin
   useEffect(() => {
     const fetchPartners = async () => {
-      const { data, error } = await supabase.from('partners').select('*').order('created_at', { ascending: false });
+      const { data, error } = await supabase
+        .from('partners')
+        .select('*')
+        .order('created_at', { ascending: false });
+      
       if (!error && data) {
         setDbPartners(data.map(p => ({ name: p.name, logo: p.logo_url })));
       }
@@ -107,7 +113,9 @@ const Rental = () => {
     fetchPartners();
   }, []);
 
-  const { register, handleSubmit, setValue, watch, formState: { errors, isSubmitting } } = useForm<FormData>({ resolver: zodResolver(schema) });
+  const { register, handleSubmit, setValue, watch, formState: { errors, isSubmitting } } = useForm<FormData>({
+    resolver: zodResolver(schema),
+  });
 
   const onSubmit = async (data: FormData) => {
     await new Promise(r => setTimeout(r, 700));
@@ -117,13 +125,17 @@ const Rental = () => {
   };
 
   const businessTypes = ['shop', 'kiosk', 'driveThru', 'supermarket'] as const;
-  
+
   // Combine static and DB partners
   const staticPartners = STATIC_PARTNERS.map((partner, index) => ({
     name: partner.name,
     logo: STATIC_LOGOS[index] ?? partner.logo,
   }));
-  const combinedPartners = [...staticPartners, ...dbPartners].filter((partner): partner is Partner => Boolean(partner.logo));
+  
+  const combinedPartners = [...staticPartners, ...dbPartners].filter(
+    (partner): partner is Partner => Boolean(partner.logo)
+  );
+
   const minimumLogoCount = 30;
   const trackPartners = Array.from({
     length: Math.max(1, Math.ceil(minimumLogoCount / Math.max(combinedPartners.length, 1))),
@@ -144,7 +156,7 @@ const Rental = () => {
       <style>{`
         @keyframes scroll-marquee {
           0% { transform: translateX(0); }
-          100% { transform: translateX(-25%); }
+          100% { transform: translateX(-50%); }
         }
         .animate-marquee {
           animation: scroll-marquee 55s linear infinite;
@@ -155,7 +167,6 @@ const Rental = () => {
       `}</style>
 
       <div className="relative z-10 container py-20 md:py-28 flex flex-col items-center gap-14">
-
         <div className="text-center">
           <p className="text-primary text-sm uppercase tracking-widest font-semibold mb-3">
             — {t('nav.rental')}
@@ -172,13 +183,18 @@ const Rental = () => {
           <div className="absolute inset-y-0 right-0 w-12 md:w-24 bg-gradient-to-l from-black/50 to-transparent z-10 pointer-events-none" />
 
           <div className="flex w-max animate-marquee" dir="ltr" aria-label="Rental partners">
-            {[0, 1, 2, 3].map((track) => (
-              <div key={track} className="flex shrink-0 gap-6 pr-6" aria-hidden={track !== 0}>
-                {trackPartners.map((p, idx) => (
-                  <PartnerCard key={`${track}-${p.name}-${idx}`} partner={p} />
-                ))}
-              </div>
-            ))}
+            {/* First set */}
+            <div className="flex shrink-0 gap-6 pr-6">
+              {trackPartners.map((p, idx) => (
+                <PartnerCard key={`set1-${p.name}-${idx}`} partner={p} />
+              ))}
+            </div>
+            {/* Second set (duplicate for seamless loop) */}
+            <div className="flex shrink-0 gap-6 pr-6" aria-hidden="true">
+              {trackPartners.map((p, idx) => (
+                <PartnerCard key={`set2-${p.name}-${idx}`} partner={p} />
+              ))}
+            </div>
           </div>
         </div>
 
@@ -221,9 +237,13 @@ const Rental = () => {
                 <div>
                   <Label className="mb-2 block">{t('rental.form.type')}</Label>
                   <Select value={watch('type')} onValueChange={v => setValue('type', v, { shouldValidate: true })}>
-                    <SelectTrigger className="h-12 bg-input/50 border-border/50"><SelectValue placeholder="—" /></SelectTrigger>
+                    <SelectTrigger className="h-12 bg-input/50 border-border/50">
+                      <SelectValue placeholder="—" />
+                    </SelectTrigger>
                     <SelectContent>
-                      {businessTypes.map(bt => <SelectItem key={bt} value={bt}>{t(`rental.types.${bt}`)}</SelectItem>)}
+                      {businessTypes.map(bt => (
+                        <SelectItem key={bt} value={bt}>{t(`rental.types.${bt}`)}</SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   {errors.type && <p className="text-destructive text-xs mt-1">{t('rental.form.required')}</p>}
@@ -243,8 +263,18 @@ const Rental = () => {
                 </div>
               </div>
 
-              <Button type="submit" disabled={isSubmitting} size="lg" className="w-full h-14 bg-gradient-ignition text-primary-foreground shadow-glow hover:opacity-90 text-base font-semibold">
-                {isSubmitting ? '...' : <>{t('rental.form.send')}<Send className={`h-5 w-5 ${isRtl ? 'mr-2' : 'ml-2'}`} /></>}
+              <Button
+                type="submit"
+                disabled={isSubmitting}
+                size="lg"
+                className="w-full h-14 bg-gradient-ignition text-primary-foreground shadow-glow hover:opacity-90 text-base font-semibold"
+              >
+                {isSubmitting ? '...' : (
+                  <>
+                    {t('rental.form.send')}
+                    <Send className={`h-5 w-5 ${isRtl ? 'mr-2' : 'ml-2'}`} />
+                  </>
+                )}
               </Button>
             </form>
           )}
