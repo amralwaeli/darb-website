@@ -33,10 +33,22 @@
   "services": {
     "title": "A full-service network",
     "subtitle": "Everything drivers, fleets, and businesses need — under one canopy.",
-    "fuel": { "title": "Premium Fuel", "desc": "High-quality 91, 95 and diesel grades, dispensed fast." },
-    "ev": { "title": "EV Charging", "desc": "Fast-charging stations rolling out via our EVIQ partnership." },
-    "retail": { "title": "Retail & F&B", "desc": "Convenience stores, cafés and quick-service dining." },
-    "rental": { "title": "Lease a Space", "desc": "Kiosks, drive-thrus and shops in high-traffic locations." }
+    "fuel": {
+      "title": "Premium Fuel",
+      "desc": "High-quality 91, 95 and diesel grades, dispensed fast."
+    },
+    "ev": {
+      "title": "EV Charging",
+      "desc": "Fast-charging stations rolling out via our EVIQ partnership."
+    },
+    "retail": {
+      "title": "Retail & F&B",
+      "desc": "Convenience stores, cafés and quick-service dining."
+    },
+    "rental": {
+      "title": "Lease a Space",
+      "desc": "Kiosks, drive-thrus and shops in high-traffic locations."
+    }
   },
   "network": {
     "title": "53 stations. One network.",
@@ -71,5 +83,27 @@
     "follow": "Follow Darb",
     "rights": "All rights reserved."
   },
-  "lang": "العربية"
+  "lang": "العربية",
+  "rental": {
+    "headline": "Be our partner and share in our success",
+    "subheading": "Fill out the form below and we will contact you within 24 hours",
+    "form": {
+      "name": "Name",
+      "phone": "Phone Number",
+      "city": "City",
+      "type": "Business Type",
+      "branches": "Number of Branches",
+      "brand": "Brand Name",
+      "send": "Send Request",
+      "required": "This field is required",
+      "successTitle": "Request received!",
+      "success": "Thank you — our team will contact you within 24 hours."
+    },
+    "types": {
+      "shop": "Shop",
+      "kiosk": "Kiosk",
+      "driveThru": "Drive Thru",
+      "supermarket": "Supermarket"
+    }
+  }
 }
