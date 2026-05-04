@@ -12,6 +12,7 @@ import Investment from "./pages/Investment";
 import Stub from "./pages/Stub";
 import AdminLogin from "./pages/AdminLogin";
 import Admin from "./pages/Admin";
+import Rental from "./pages/Rental";
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -29,7 +30,7 @@ const App = () => (
               <Route path="/about" element={<About />} />
               <Route path="/map" element={<StationMap />} />
               <Route path="/investment" element={<Investment />} />
-              <Route path="/rental" element={<Stub titleKey="nav.rental" />} />
+              <Route path="/rental" element={<Rental />} />
               <Route path="/jobs" element={<Stub titleKey="nav.jobs" />} />
               <Route path="/media" element={<Stub titleKey="nav.media" />} />
               <Route path="/faq" element={<Stub titleKey="nav.faq" />} />
