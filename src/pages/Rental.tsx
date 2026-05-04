@@ -154,16 +154,22 @@ const Rental = () => {
 
       {/* Infinite Marquee Styles */}
       <style>{`
-        @keyframes scroll-marquee {
+        @keyframes scroll-marquee-ltr {
           0% { transform: translateX(0); }
           100% { transform: translateX(-50%); }
         }
+        @keyframes scroll-marquee-rtl {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(50%); }
+        }
         .animate-marquee {
-          animation: scroll-marquee 55s linear infinite;
+          animation-duration: 55s;
+          animation-timing-function: linear;
+          animation-iteration-count: infinite;
         }
-        .animate-marquee:hover {
-          animation-play-state: paused;
-        }
+        .animate-marquee-ltr { animation-name: scroll-marquee-ltr; }
+        .animate-marquee-rtl { animation-name: scroll-marquee-rtl; }
+        .animate-marquee:hover { animation-play-state: paused; }
       `}</style>
 
       <div className="relative z-10 container py-20 md:py-28 flex flex-col items-center gap-14">
@@ -178,19 +184,20 @@ const Rental = () => {
 
         {/* ── Infinite Partner logos strip ── */}
         <div className="w-full max-w-[100vw] overflow-hidden relative">
-          {/* Fade gradient edges for cleaner look */}
-          <div className="absolute inset-y-0 left-0 w-12 md:w-24 bg-gradient-to-r from-black/50 to-transparent z-10 pointer-events-none" />
-          <div className="absolute inset-y-0 right-0 w-12 md:w-24 bg-gradient-to-l from-black/50 to-transparent z-10 pointer-events-none" />
+          {/* Fade gradient edges - adapt to RTL/LTR */}
+          <div className={`absolute inset-y-0 ${isRtl ? 'right-0 bg-gradient-to-l' : 'left-0 bg-gradient-to-r'} w-12 md:w-24 from-black/50 to-transparent z-10 pointer-events-none`} />
+          <div className={`absolute inset-y-0 ${isRtl ? 'left-0 bg-gradient-to-r' : 'right-0 bg-gradient-to-l'} w-12 md:w-24 from-black/50 to-transparent z-10 pointer-events-none`} />
 
-          <div className="flex w-max animate-marquee" dir="ltr" aria-label="Rental partners">
+          {/* Removed dir="ltr" so flex respects page direction. Added dynamic animation class. */}
+          <div className={`flex w-max animate-marquee ${isRtl ? 'animate-marquee-rtl' : 'animate-marquee-ltr'}`} aria-label="Rental partners">
             {/* First set */}
-            <div className="flex shrink-0 gap-6 pr-6">
+            <div className="flex shrink-0 gap-6 pe-6">
               {trackPartners.map((p, idx) => (
                 <PartnerCard key={`set1-${p.name}-${idx}`} partner={p} />
               ))}
             </div>
             {/* Second set (duplicate for seamless loop) */}
-            <div className="flex shrink-0 gap-6 pr-6" aria-hidden="true">
+            <div className="flex shrink-0 gap-6 pe-6" aria-hidden="true">
               {trackPartners.map((p, idx) => (
                 <PartnerCard key={`set2-${p.name}-${idx}`} partner={p} />
               ))}
