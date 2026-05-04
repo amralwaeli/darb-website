@@ -124,7 +124,7 @@ const Rental = () => {
     logo: STATIC_LOGOS[index] ?? partner.logo,
   }));
   const combinedPartners = [...staticPartners, ...dbPartners].filter((partner): partner is Partner => Boolean(partner.logo));
-  const minimumLogoCount = 12;
+  const minimumLogoCount = 30;
   const trackPartners = Array.from({
     length: Math.max(1, Math.ceil(minimumLogoCount / Math.max(combinedPartners.length, 1))),
   }).flatMap(() => combinedPartners);
@@ -144,10 +144,10 @@ const Rental = () => {
       <style>{`
         @keyframes scroll-marquee {
           0% { transform: translateX(0); }
-          100% { transform: translateX(-33.333333%); }
+          100% { transform: translateX(-25%); }
         }
         .animate-marquee {
-          animation: scroll-marquee 42s linear infinite;
+          animation: scroll-marquee 55s linear infinite;
         }
         .animate-marquee:hover {
           animation-play-state: paused;
@@ -172,7 +172,7 @@ const Rental = () => {
           <div className="absolute inset-y-0 right-0 w-12 md:w-24 bg-gradient-to-l from-black/50 to-transparent z-10 pointer-events-none" />
 
           <div className="flex w-max animate-marquee" dir="ltr" aria-label="Rental partners">
-            {[0, 1, 2].map((track) => (
+            {[0, 1, 2, 3].map((track) => (
               <div key={track} className="flex shrink-0 gap-6 pr-6" aria-hidden={track !== 0}>
                 {trackPartners.map((p, idx) => (
                   <PartnerCard key={`${track}-${p.name}-${idx}`} partner={p} />
