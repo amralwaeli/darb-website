@@ -106,17 +106,22 @@ const Admin = () => {
 
   // ─── Partners/Cropper Handlers ───
   const onFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
-    const url = URL.createObjectURL(file);
+  const file = e.target.files?.[0];
+  if (!file) return;
+
+  const reader = new FileReader();
+  reader.onload = (event) => {
     const img = new Image();
     img.onload = () => {
+      console.log("Image loaded dimensions:", img.width, img.height);
       setImageObj(img);
       setScale(1);
       setPos({ x: 0, y: 0 });
     };
-    img.src = url;
+    img.src = event.target?.result as string;
   };
+  reader.readAsDataURL(file);
+};
 
   const handlePointerDown = (e: React.PointerEvent) => {
     setIsDragging(true);
@@ -320,9 +325,15 @@ const Admin = () => {
               </div>
             )}
 
-            <Button type="submit" disabled={busy || !imageObj} className="w-full h-11 bg-gradient-ignition text-primary-foreground shadow-glow">
-              {busy ? 'Saving…' : 'Save Partner Logo'}
-            </Button>
+            <Button 
+                type="submit" 
+                // Let's remove the condition for a moment to test if the button works
+                // If this makes it clickable, then the issue is definitely that 'imageObj' is staying null
+                disabled={busy} 
+                className="w-full h-11 bg-gradient-ignition text-primary-foreground shadow-glow"
+              >
+                {busy ? 'Saving…' : 'Save Partner Logo'}
+              </Button>
           </form>
 
           <div className="rounded-2xl bg-gradient-card border border-border/50 p-3 max-h-[700px] overflow-y-auto">
