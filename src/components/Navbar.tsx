@@ -57,9 +57,9 @@ export const Navbar = () => {
           ))}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-4">
           <Button variant="ghost" size="sm" onClick={toggleLang} className="gap-2">
-            <Globe className="h-4 w-4" /> <span className="hidden sm:inline">{t('lang')}</span>
+            <Globe className="h-7 w-7" /> <span className="hidden sm:inline">{t('lang')}</span>
           </Button>
           
           {/* Vision 2030 Logo - Replaces "Become an investor" button */}
