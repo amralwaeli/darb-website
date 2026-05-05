@@ -15,6 +15,7 @@ import Admin from "./pages/Admin";
 import Rental from "./pages/Rental";
 import Careers from "./pages/Careers"; // 👈 Add this import
 import NotFound from "./pages/NotFound.tsx";
+import Contact from "./pages/Contact";
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,7 @@ const App = () => (
               <Route path="/investment" element={<Investment />} />
               <Route path="/rental" element={<Rental />} />
               <Route path="/jobs" element={<Careers />} /> {/* 👈 Changed from Stub to Careers */}
+              <Route path="/contact" element={<Contact />} />
               <Route path="/media" element={<Stub titleKey="nav.media" />} />
               <Route path="/faq" element={<Stub titleKey="nav.faq" />} />
               <Route path="/contact" element={<Stub titleKey="nav.contact" />} />

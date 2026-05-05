@@ -133,5 +133,38 @@
       "message": "Your application has been submitted successfully. We'll review it and get back to you soon.",
       "submitAnother": "Submit Another Application"
     }
+  },
+  "contact": {
+  "title": "Darb Salem Center",
+    "subtitle": "Our team is ready to serve you around the clock, choose the most appropriate way to contact us",
+    "methods": {
+      "phone": {
+        "title": "Unified number",
+        "label": "Call us now",
+        "value": "8003030100"
+      },
+      "whatsapp": {
+        "title": "WhatsApp Business",
+        "label": "Contact via WhatsApp",
+        "value": "920005804"
+      },
+      "email": {
+        "title": "e-mail",
+        "label": "Send us an email",
+        "value": "info@darbstations.com.sa"
+      }
+    },
+    "location": {
+      "title": "Location",
+      "address": "Kingdom of Saudi Arabia - Available at 53 stations across the Kingdom"
+    },
+    "hours": {
+      "title": "Working Hours",
+      "schedule": "We serve you around the clock all week - 24/7"
+    },
+    "satisfaction": {
+      "title": "Your satisfaction is our goal",
+      "message": "We always strive to provide the best experience for our valued customers, and we are happy to receive your suggestions and inquiries at any time"
+    }
   }
 }
