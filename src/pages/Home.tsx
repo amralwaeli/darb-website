@@ -116,12 +116,15 @@ const Home = () => {
           <div className="absolute inset-0 bg-gradient-to-t from-background/60 to-transparent" />
         </div>
         <div>
-          <p className="text-accent text-sm uppercase tracking-widest font-semibold mb-3">— EV · 2026</p>
-          <h2 className="text-4xl md:text-6xl font-bold">Ready for what's next.</h2>
-          <p className="mt-4 text-lg text-muted-foreground">In partnership with EVIQ, we're rolling out fast-charging across our entire network — so the road ahead stays open, whatever you drive.</p>
+          <p className="text-accent text-sm uppercase tracking-widest font-semibold mb-3">— {t('ev.tag')}</p>
+          <h2 className="text-4xl md:text-6xl font-bold">{t('ev.title')}</h2>
+          <p className="mt-4 text-lg text-muted-foreground">{t('ev.subtitle')}</p>
           <ul className="mt-8 space-y-3">
-            {['DC fast-charging up to 360 kW', 'Live availability in app', 'Single tap-to-pay across the network'].map(x => (
-              <li key={x} className="flex items-center gap-3"><ChevronRight className="h-4 w-4 text-primary" /><span>{x}</span></li>
+            {[0, 1, 2].map((i) => (
+              <li key={i} className="flex items-center gap-3">
+                <ChevronRight className="h-4 w-4 text-primary" />
+                <span>{t(`ev.features.${i}`)}</span>
+              </li>
             ))}
           </ul>
         </div>

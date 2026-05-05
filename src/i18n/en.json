@@ -166,5 +166,38 @@
       "title": "Your satisfaction is our goal",
       "message": "We always strive to provide the best experience for our valued customers, and we are happy to receive your suggestions and inquiries at any time"
     }
+  },
+  "about": {
+  "title": "A road built on ",
+    "titleAccent": "trust.",
+    "description": "Founded to power Saudi Arabia's growing mobility needs, Darb operates 53 premium service stations from the heart of Riyadh to the southern coasts of Jazan. We don't just sell fuel — we build journeys.",
+    "blocks": {
+      "vision": {
+        "title": "Our Vision",
+        "text": "To be the most trusted and innovative fuel-retail network in Saudi Arabia by 2030."
+      },
+      "mission": {
+        "title": "Our Mission",
+        "text": "Deliver premium energy and convenience experiences that move people, businesses and the Kingdom forward."
+      },
+      "values": {
+        "title": "Our Values",
+        "text": "Safety, hospitality, sustainability — at every station, every day."
+      },
+      "vision2030": {
+        "title": "Vision 2030",
+        "text": "Aligned with Saudi Vision 2030 to diversify energy and elevate national mobility."
+      }
+    }
+  },
+  "ev": {
+  "tag": "EV · 2026",
+    "title": "Ready for what's next.",
+    "subtitle": "In partnership with EVIQ, we're rolling out fast-charging across our entire network — so the road ahead stays open, whatever you drive.",
+    "features": [
+      "DC fast-charging up to 360 kW",
+      "Live availability in app",
+      "Single tap-to-pay across the network"
+    ]
   }
 }
