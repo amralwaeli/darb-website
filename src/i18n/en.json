@@ -105,5 +105,33 @@
       "driveThru": "Drive Thru",
       "supermarket": "Supermarket"
     }
+  },
+  "careers": {
+    "headline": "Start your career with us",
+    "subheading": "Fill in your details to complete the application",
+    "form": {
+      "firstName": "First Name",
+      "lastName": "Last Name",
+      "email": "Email",
+      "phone": "Phone Number",
+      "uploadCV": "Upload CV",
+      "cvPlaceholder": "Choose file (PDF, DOC, DOCX)",
+      "coverLetter": "Cover Letter",
+      "coverLetterPlaceholder": "Tell us about yourself and why you want to work with us...",
+      "agreeTerms": "I agree to the terms and conditions",
+      "submit": "Submit Application",
+      "submitting": "Submitting...",
+      "success": "Application submitted successfully!"
+    },
+    "errors": {
+      "invalidFile": "Please upload a valid file (PDF, DOC, or DOCX)",
+      "agreeTerms": "Please agree to the terms and conditions",
+      "uploadCV": "Please upload your CV"
+    },
+    "success": {
+      "title": "Thank You!",
+      "message": "Your application has been submitted successfully. We'll review it and get back to you soon.",
+      "submitAnother": "Submit Another Application"
+    }
   }
 }

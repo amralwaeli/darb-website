@@ -105,5 +105,33 @@
       "driveThru": "درايف ثرو / Drive Thru",
       "supermarket": "سوبرماركت / Supermarket"
     }
+  },
+  "careers": {
+  "headline": "ابدأ مسيرتك المهنية معنا",
+  "subheading": "املأ تفاصيلك لإكمال الطلب",
+  "form": {
+      "firstName": "الاسم الأول",
+      "lastName": "اسم العائلة",
+      "email": "البريد الإلكتروني",
+      "phone": "رقم الجوال",
+      "uploadCV": "رفع السيرة الذاتية",
+      "cvPlaceholder": "اختر ملف (PDF, DOC, DOCX)",
+      "coverLetter": "رسالة تعريفية",
+      "coverLetterPlaceholder": "أخبرنا عن نفسك ولماذا تريد العمل معنا...",
+      "agreeTerms": "أوافق على الشروط والأحكام",
+      "submit": "إرسال الطلب",
+      "submitting": "جاري الإرسال...",
+      "success": "تم إرسال طلبك بنجاح!"
+    },
+    "errors": {
+      "invalidFile": "يرجى رفع ملف صالح (PDF, DOC, أو DOCX)",
+      "agreeTerms": "يرجى الموافقة على الشروط والأحكام",
+      "uploadCV": "يرجى رفع سيرتك الذاتية"
+    },
+    "success": {
+      "title": "شكراً لك!",
+      "message": "تم استلام طلبك بنجاح. سنقوم بمراجعته والتواصل معك قريباً.",
+      "submitAnother": "إرسال طلب آخر"
+    }
   }
 }

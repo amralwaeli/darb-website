@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { HashRouter, Route, Routes } from "react-router-dom";  // 👈 changed
+import { HashRouter, Route, Routes } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -13,6 +13,7 @@ import Stub from "./pages/Stub";
 import AdminLogin from "./pages/AdminLogin";
 import Admin from "./pages/Admin";
 import Rental from "./pages/Rental";
+import Careers from "./pages/Careers"; // 👈 Add this import
 import NotFound from "./pages/NotFound.tsx";
 
 const queryClient = new QueryClient();
@@ -22,7 +23,7 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
-      <HashRouter>  {/* 👈 changed */}
+      <HashRouter>
         <AuthProvider>
           <Routes>
             <Route element={<Layout />}>
@@ -31,7 +32,7 @@ const App = () => (
               <Route path="/map" element={<StationMap />} />
               <Route path="/investment" element={<Investment />} />
               <Route path="/rental" element={<Rental />} />
-              <Route path="/jobs" element={<Stub titleKey="nav.jobs" />} />
+              <Route path="/jobs" element={<Careers />} /> {/* 👈 Changed from Stub to Careers */}
               <Route path="/media" element={<Stub titleKey="nav.media" />} />
               <Route path="/faq" element={<Stub titleKey="nav.faq" />} />
               <Route path="/contact" element={<Stub titleKey="nav.contact" />} />
@@ -41,7 +42,7 @@ const App = () => (
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>
-      </HashRouter>  {/* 👈 changed */}
+      </HashRouter>
     </TooltipProvider>
   </QueryClientProvider>
 );
